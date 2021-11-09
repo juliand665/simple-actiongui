@@ -1,0 +1,25 @@
+{
+    "name": "simple-actiongui",
+    "displayName": "Simple ActionGUI",
+    "description": "Language support for ActionGUI",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.62.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "actiongui",
+            "aliases": ["ActionGUI", "actiongui"],
+            "extensions": [".dtm",".stm",".gtm"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "actiongui",
+            "scopeName": "source.actiongui",
+            "path": "./syntaxes/actiongui.tmLanguage.json"
+        }]
+    }
+}
