@@ -1,0 +1,17 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "json to yaml",
+			"type": "shell",
+			"command": "npx js-yaml syntaxes/actiongui.tmLanguage.yaml > syntaxes/actiongui.tmLanguage.json",
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}

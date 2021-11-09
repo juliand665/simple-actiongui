@@ -10,16 +10,30 @@
         "Programming Languages"
     ],
     "contributes": {
-        "languages": [{
-            "id": "actiongui",
-            "aliases": ["ActionGUI", "actiongui"],
-            "extensions": [".dtm",".stm",".gtm"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "actiongui",
-            "scopeName": "source.actiongui",
-            "path": "./syntaxes/actiongui.tmLanguage.json"
-        }]
+        "languages": [
+            {
+                "id": "actiongui",
+                "aliases": [
+                    "ActionGUI",
+                    "actiongui"
+                ],
+                "extensions": [
+                    ".dtm",
+                    ".stm",
+                    ".gtm"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "actiongui",
+                "scopeName": "source.actiongui",
+                "path": "./syntaxes/actiongui.tmLanguage.json"
+            }
+        ]
+    },
+    "devDependencies": {
+        "js-yaml": "^4.1.0"
     }
 }
