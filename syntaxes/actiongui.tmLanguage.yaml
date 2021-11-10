@@ -69,7 +69,7 @@ repository:
     match: \b(Boolean|Integer|Real|String|LocalDate)\b
   customType:
     name: entity.name.type.actiongui
-    match: \b\S+\b
+    match: \b\w+\b
   collectionType:
     name: support.type.collection.actiongui
     begin: \b(Set|Bag|OrderedSet|Sequence)(\()
@@ -105,7 +105,7 @@ repository:
       - include: '#comment'
   roleDef:
     name: meta.role.actiongui
-    begin: (role)\s+(\w+)(\s+(extends)\s+(\w+))?\s+(\{)
+    begin: (role)\s+(\w+)(\s+(extends)\s+(\w+))?\s*(\{)
     end: \s*(\})
     beginCaptures:
       1:
@@ -122,11 +122,11 @@ repository:
       1:
         name: punctuation.definition.block.actiongui
     patterns:
-      - include: '#roleEntity'
       - include: '#comment'
+      - include: '#roleEntity'
   roleEntity:
     name: meta.role.entity.actiongui
-    begin: \b(\w+)\s+(\{)
+    begin: \b(\w+)\s*(\{)
     end: \s*(\})
     beginCaptures:
       1:
@@ -137,42 +137,49 @@ repository:
       1:
         name: punctuation.definition.block.actiongui
     patterns:
+      - include: '#comment'
       - name: punctuation.permission.separator.actiongui
         match: ','
       - include: '#permission'
       - name: meta.role.entity.entry.withConstraint.actiongui
-        match: \b(constrainedBy)\s*(\[.*\])
-        captures:
+        begin: \b(constrainedBy)\s*(\[)
+        end: \s*(\])
+        beginCaptures:
           1:
             name: keyword.other.permission.constraint.actiongui
           2:
-            patterns:
-              - include: '#ocl'
+            name: punctuation.block.ocl.actiongui
+        endCaptures:
+          1:
+            name: punctuation.block.ocl.actiongui
+        patterns:
+          - include: '#oclContent'
   permission:
     patterns:
-      - name: variable.other.permission.overall.actiongui
-        match: \b(create|delete|fullAccess)\b
-        captures:
-          1:
-            name: support.function.actiongui
       - name: variable.other.permission.attribute.actiongui
-        match: \b(read|update|add)\s*\((\w+)\)
+        match: \b(read|update|add|remove)\s*\((\w+)\)
         captures:
           1:
             name: support.function.actiongui
           2:
             name: variable.other.property.actiongui
+      - name: variable.other.permission.overall.actiongui
+        match: \b(create|delete|fullAccess|read|update)\b
+        captures:
+          1:
+            name: support.function.actiongui
   ocl:
     name: meta.embedded.ocl.actiongui
-    match: (\[)(.*)(\])
-    captures:
+    begin: (\[)
+    end: (\])
+    beginCaptures:
       1:
         name: punctuation.block.ocl.actiongui
-      2:
-        patterns:
-          - include: '#oclContent'
-      3:
+    endCaptures:
+      1:
         name: punctuation.block.ocl.actiongui
+    patterns:
+      - include: '#oclContent'
   oclContent:
     patterns:
       # - include: source.ocl
@@ -180,6 +187,7 @@ repository:
         match: \b(self|caller|value|target)\b
       - include: '#oclAccess'
       - include: '#oclMember'
+      - include: '#oclEnumCase'
       - include: '#oclJoin'
       - include: '#oclLiteral'
       - include: '#oclConditional'
@@ -194,8 +202,9 @@ repository:
           3:
             name: punctuation.expression.gui.actiongui.ocl
       - name: keyword.operator.actiongui.ocl
-        match: (\b(and|or|not|xor|implies)\b|=|<>|<|>|<=|>=|\+|(?!->)-|\*|/)
+        match: \b(and|or|not|xor|implies)\b|(=(?!=)|<=|>=|<>|<|>|\+|-(?!>)|\*|/|\|)
       - include: '#type'
+      - include: '#oclGroup'
     repository:
       oclExpressionList:
         patterns:
@@ -204,7 +213,7 @@ repository:
           - include: '#oclContent'
       oclMember:
         name: meta.member.actiongui.ocl
-        match: (\.)(div|mod|abs|max|min|floor|round|size|concat|substring|toUpper|toLower|toInteger|toReal|toString)(\()(.*?)(\))
+        match: (\.)(div|mod|abs|max|min|floor|round|size|concat|substring|toUpper|toLower|toInteger|toReal|toString|oclIsUndefined|oclIsInvalid)(\()(.*?)(\))
         captures:
           1:
             name: punctuation.chain.actiongui.ocl
@@ -232,6 +241,14 @@ repository:
               - include: '#oclExpressionList'
           5:
             name: punctuation.parameters.actiongui.ocl
+      oclEnumCase:
+        name: meta.enumCase.actiongui.ocl
+        match: (::)(\w+)\b
+        captures:
+          1:
+            name: punctuation.enumCase.actiongui.ocl
+          2:
+            name: constant.other.enum.actiongui.ocl
       oclJoin:
         name: meta.join.actiongui.ocl
         match: (\.)(\w+)
@@ -268,6 +285,17 @@ repository:
               - include: '#oclContent'
           7:
             name: keyword.control.endif.actiongui.ocl
+      oclGroup:
+        begin: (\()
+        end: (\))
+        beginCaptures:
+          1:
+            name: punctuation.group.actiongui.ocl
+        endCaptures:
+          1:
+            name: punctuation.group.actiongui.ocl
+        patterns:
+          - include: '#oclContent'
   windowDef:
     name: meta.window.actiongui
     begin: \b(Window)\s+(\w+)\s+(\{)

@@ -195,7 +195,7 @@
         <key>name</key>
         <string>entity.name.type.actiongui</string>
         <key>match</key>
-        <string>\b\S+\b</string>
+        <string>\b\w+\b</string>
       </dict>
       <key>collectionType</key>
       <dict>
@@ -291,7 +291,7 @@
         <key>name</key>
         <string>meta.role.actiongui</string>
         <key>begin</key>
-        <string>(role)\s+(\w+)(\s+(extends)\s+(\w+))?\s+(\{)</string>
+        <string>(role)\s+(\w+)(\s+(extends)\s+(\w+))?\s*(\{)</string>
         <key>end</key>
         <string>\s*(\})</string>
         <key>beginCaptures</key>
@@ -334,11 +334,11 @@
         <array>
           <dict>
             <key>include</key>
-            <string>#roleEntity</string>
+            <string>#comment</string>
           </dict>
           <dict>
             <key>include</key>
-            <string>#comment</string>
+            <string>#roleEntity</string>
           </dict>
         </array>
       </dict>
@@ -347,7 +347,7 @@
         <key>name</key>
         <string>meta.role.entity.actiongui</string>
         <key>begin</key>
-        <string>\b(\w+)\s+(\{)</string>
+        <string>\b(\w+)\s*(\{)</string>
         <key>end</key>
         <string>\s*(\})</string>
         <key>beginCaptures</key>
@@ -374,6 +374,10 @@
         <key>patterns</key>
         <array>
           <dict>
+            <key>include</key>
+            <string>#comment</string>
+          </dict>
+          <dict>
             <key>name</key>
             <string>punctuation.permission.separator.actiongui</string>
             <key>match</key>
@@ -386,9 +390,11 @@
           <dict>
             <key>name</key>
             <string>meta.role.entity.entry.withConstraint.actiongui</string>
-            <key>match</key>
-            <string>\b(constrainedBy)\s*(\[.*\])</string>
-            <key>captures</key>
+            <key>begin</key>
+            <string>\b(constrainedBy)\s*(\[)</string>
+            <key>end</key>
+            <string>\s*(\])</string>
+            <key>beginCaptures</key>
             <dict>
               <key>1</key>
               <dict>
@@ -397,15 +403,25 @@
               </dict>
               <key>2</key>
               <dict>
-                <key>patterns</key>
-                <array>
-                  <dict>
-                    <key>include</key>
-                    <string>#ocl</string>
-                  </dict>
-                </array>
+                <key>name</key>
+                <string>punctuation.block.ocl.actiongui</string>
               </dict>
             </dict>
+            <key>endCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.block.ocl.actiongui</string>
+              </dict>
+            </dict>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>include</key>
+                <string>#oclContent</string>
+              </dict>
+            </array>
           </dict>
         </array>
       </dict>
@@ -415,23 +431,9 @@
         <array>
           <dict>
             <key>name</key>
-            <string>variable.other.permission.overall.actiongui</string>
-            <key>match</key>
-            <string>\b(create|delete|fullAccess)\b</string>
-            <key>captures</key>
-            <dict>
-              <key>1</key>
-              <dict>
-                <key>name</key>
-                <string>support.function.actiongui</string>
-              </dict>
-            </dict>
-          </dict>
-          <dict>
-            <key>name</key>
             <string>variable.other.permission.attribute.actiongui</string>
             <key>match</key>
-            <string>\b(read|update|add)\s*\((\w+)\)</string>
+            <string>\b(read|update|add|remove)\s*\((\w+)\)</string>
             <key>captures</key>
             <dict>
               <key>1</key>
@@ -446,37 +448,53 @@
               </dict>
             </dict>
           </dict>
+          <dict>
+            <key>name</key>
+            <string>variable.other.permission.overall.actiongui</string>
+            <key>match</key>
+            <string>\b(create|delete|fullAccess|read|update)\b</string>
+            <key>captures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>support.function.actiongui</string>
+              </dict>
+            </dict>
+          </dict>
         </array>
       </dict>
       <key>ocl</key>
       <dict>
         <key>name</key>
         <string>meta.embedded.ocl.actiongui</string>
-        <key>match</key>
-        <string>(\[)(.*)(\])</string>
-        <key>captures</key>
+        <key>begin</key>
+        <string>(\[)</string>
+        <key>end</key>
+        <string>(\])</string>
+        <key>beginCaptures</key>
         <dict>
           <key>1</key>
           <dict>
             <key>name</key>
             <string>punctuation.block.ocl.actiongui</string>
           </dict>
-          <key>2</key>
-          <dict>
-            <key>patterns</key>
-            <array>
-              <dict>
-                <key>include</key>
-                <string>#oclContent</string>
-              </dict>
-            </array>
-          </dict>
-          <key>3</key>
+        </dict>
+        <key>endCaptures</key>
+        <dict>
+          <key>1</key>
           <dict>
             <key>name</key>
             <string>punctuation.block.ocl.actiongui</string>
           </dict>
         </dict>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#oclContent</string>
+          </dict>
+        </array>
       </dict>
       <key>oclContent</key>
       <dict>
@@ -495,6 +513,10 @@
           <dict>
             <key>include</key>
             <string>#oclMember</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#oclEnumCase</string>
           </dict>
           <dict>
             <key>include</key>
@@ -541,11 +563,15 @@
             <key>name</key>
             <string>keyword.operator.actiongui.ocl</string>
             <key>match</key>
-            <string>(\b(and|or|not|xor|implies)\b|=|&lt;&gt;|&lt;|&gt;|&lt;=|&gt;=|\+|(?!-&gt;)-|\*|/)</string>
+            <string>\b(and|or|not|xor|implies)\b|(=(?!=)|&lt;=|&gt;=|&lt;&gt;|&lt;|&gt;|\+|-(?!&gt;)|\*|/|\|)</string>
           </dict>
           <dict>
             <key>include</key>
             <string>#type</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#oclGroup</string>
           </dict>
         </array>
         <key>repository</key>
@@ -571,7 +597,7 @@
             <key>name</key>
             <string>meta.member.actiongui.ocl</string>
             <key>match</key>
-            <string>(\.)(div|mod|abs|max|min|floor|round|size|concat|substring|toUpper|toLower|toInteger|toReal|toString)(\()(.*?)(\))</string>
+            <string>(\.)(div|mod|abs|max|min|floor|round|size|concat|substring|toUpper|toLower|toInteger|toReal|toString|oclIsUndefined|oclIsInvalid)(\()(.*?)(\))</string>
             <key>captures</key>
             <dict>
               <key>1</key>
@@ -643,6 +669,26 @@
               <dict>
                 <key>name</key>
                 <string>punctuation.parameters.actiongui.ocl</string>
+              </dict>
+            </dict>
+          </dict>
+          <key>oclEnumCase</key>
+          <dict>
+            <key>name</key>
+            <string>meta.enumCase.actiongui.ocl</string>
+            <key>match</key>
+            <string>(::)(\w+)\b</string>
+            <key>captures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.enumCase.actiongui.ocl</string>
+              </dict>
+              <key>2</key>
+              <dict>
+                <key>name</key>
+                <string>constant.other.enum.actiongui.ocl</string>
               </dict>
             </dict>
           </dict>
@@ -747,6 +793,36 @@
                 <string>keyword.control.endif.actiongui.ocl</string>
               </dict>
             </dict>
+          </dict>
+          <key>oclGroup</key>
+          <dict>
+            <key>begin</key>
+            <string>(\()</string>
+            <key>end</key>
+            <string>(\))</string>
+            <key>beginCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.group.actiongui.ocl</string>
+              </dict>
+            </dict>
+            <key>endCaptures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.group.actiongui.ocl</string>
+              </dict>
+            </dict>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>include</key>
+                <string>#oclContent</string>
+              </dict>
+            </array>
           </dict>
         </dict>
       </dict>
