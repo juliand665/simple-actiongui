@@ -105,14 +105,18 @@ repository:
       - include: '#comment'
   roleDef:
     name: meta.role.actiongui
-    begin: (role)\s+(\w+)\s+(\{)
+    begin: (role)\s+(\w+)(\s+(extends)\s+(\w+))?\s+(\{)
     end: \s*(\})
     beginCaptures:
       1:
         name: storage.type.actiongui
       2:
         name: entity.name.type.role.actiongui
-      3:
+      4:
+        name: keyword.other.extends.actiongui
+      5:
+        name: entity.name.type.role.actiongui
+      6:
         name: punctuation.definition.block.actiongui
     endCaptures:
       1:

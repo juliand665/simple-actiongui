@@ -291,7 +291,7 @@
         <key>name</key>
         <string>meta.role.actiongui</string>
         <key>begin</key>
-        <string>(role)\s+(\w+)\s+(\{)</string>
+        <string>(role)\s+(\w+)(\s+(extends)\s+(\w+))?\s+(\{)</string>
         <key>end</key>
         <string>\s*(\})</string>
         <key>beginCaptures</key>
@@ -306,7 +306,17 @@
             <key>name</key>
             <string>entity.name.type.role.actiongui</string>
           </dict>
-          <key>3</key>
+          <key>4</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.other.extends.actiongui</string>
+          </dict>
+          <key>5</key>
+          <dict>
+            <key>name</key>
+            <string>entity.name.type.role.actiongui</string>
+          </dict>
+          <key>6</key>
           <dict>
             <key>name</key>
             <string>punctuation.definition.block.actiongui</string>
