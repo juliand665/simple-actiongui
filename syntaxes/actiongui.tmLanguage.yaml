@@ -200,18 +200,22 @@ repository:
           - include: '#oclContent'
       oclMember:
         name: meta.member.actiongui.ocl
-        match: (\.)(div|mod|abs|max|min|floor|round|size|concat|substring|toUpper|toLower|toInteger|toReal)\((.*?)\)
+        match: (\.)(div|mod|abs|max|min|floor|round|size|concat|substring|toUpper|toLower|toInteger|toReal|toString)(\()(.*?)(\))
         captures:
           1:
             name: punctuation.chain.actiongui.ocl
           2:
             name: support.function.actiongui.ocl
           3:
+            name: punctuation.parameters.actiongui.ocl
+          4:
             patterns:
               - include: '#oclExpressionList'
+          5:
+            name: punctuation.parameters.actiongui.ocl
       oclAccess:
         name: meta.access.actiongui.ocl
-        match: (->)(size|includes|excludes|count|includesAll|isEmpty|notEmpty|sum|exists|forall|isUnique|sortedBy|iterate|union|intersection|including|excluding|symmetricDifference|select|reject|collect|flatten|append|prepend|insertAt|subSequence|at|first|last|indexOf|asSequence|asSet|asBag|oclIsUndefined)(\()(.*?)(\))
+        match: (->)(any|size|count|includes|excludes|includesAll|excludesAll|isEmpty|notEmpty|sum|exists|forall|isUnique|sortedBy|iterate|union|intersection|including|excluding|symmetricDifference|select|reject|collect|collectNested|flatten|append|prepend|insertAt|subSequence|at|first|last|indexOf|asSequence|asSet|asBag|asOrderedSet|oclIsUndefined)(\()(.*?)(\))
         captures:
           1:
             name: punctuation.access.actiongui.ocl
@@ -485,7 +489,7 @@ repository:
         match: \b(\w+)\s+([\w\.]+)
         captures:
           1:
-            name: entity.name.function.actiongui
+            name: keyword.other.function.actiongui
           2:
             patterns:
               - include: '#guiExpression'
@@ -493,7 +497,7 @@ repository:
         match: \b(\w+)\s*(\()(.*)(\))
         captures:
           1:
-            name: entity.name.function.actiongui
+            name: support.function.actiongui
           2:
             name: punctuation.definition.parameters.actiongui
           3:

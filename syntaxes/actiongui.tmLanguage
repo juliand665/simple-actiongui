@@ -561,7 +561,7 @@
             <key>name</key>
             <string>meta.member.actiongui.ocl</string>
             <key>match</key>
-            <string>(\.)(div|mod|abs|max|min|floor|round|size|concat|substring|toUpper|toLower|toInteger|toReal)\((.*?)\)</string>
+            <string>(\.)(div|mod|abs|max|min|floor|round|size|concat|substring|toUpper|toLower|toInteger|toReal|toString)(\()(.*?)(\))</string>
             <key>captures</key>
             <dict>
               <key>1</key>
@@ -576,6 +576,11 @@
               </dict>
               <key>3</key>
               <dict>
+                <key>name</key>
+                <string>punctuation.parameters.actiongui.ocl</string>
+              </dict>
+              <key>4</key>
+              <dict>
                 <key>patterns</key>
                 <array>
                   <dict>
@@ -584,6 +589,11 @@
                   </dict>
                 </array>
               </dict>
+              <key>5</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.parameters.actiongui.ocl</string>
+              </dict>
             </dict>
           </dict>
           <key>oclAccess</key>
@@ -591,7 +601,7 @@
             <key>name</key>
             <string>meta.access.actiongui.ocl</string>
             <key>match</key>
-            <string>(-&gt;)(size|includes|excludes|count|includesAll|isEmpty|notEmpty|sum|exists|forall|isUnique|sortedBy|iterate|union|intersection|including|excluding|symmetricDifference|select|reject|collect|flatten|append|prepend|insertAt|subSequence|at|first|last|indexOf|asSequence|asSet|asBag|oclIsUndefined)(\()(.*?)(\))</string>
+            <string>(-&gt;)(any|size|count|includes|excludes|includesAll|excludesAll|isEmpty|notEmpty|sum|exists|forall|isUnique|sortedBy|iterate|union|intersection|including|excluding|symmetricDifference|select|reject|collect|collectNested|flatten|append|prepend|insertAt|subSequence|at|first|last|indexOf|asSequence|asSet|asBag|asOrderedSet|oclIsUndefined)(\()(.*?)(\))</string>
             <key>captures</key>
             <dict>
               <key>1</key>
@@ -1368,7 +1378,7 @@
               <key>1</key>
               <dict>
                 <key>name</key>
-                <string>entity.name.function.actiongui</string>
+                <string>keyword.other.function.actiongui</string>
               </dict>
               <key>2</key>
               <dict>
@@ -1392,7 +1402,7 @@
               <key>1</key>
               <dict>
                 <key>name</key>
-                <string>entity.name.function.actiongui</string>
+                <string>support.function.actiongui</string>
               </dict>
               <key>2</key>
               <dict>
