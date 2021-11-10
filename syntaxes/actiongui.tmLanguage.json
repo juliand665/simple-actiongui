@@ -1,285 +1,597 @@
 {
+  "fileTypes": ["dtm", "stm", "gtm"],
+  "uuid": "A4D7C65B-1774-42E6-899B-FB615886BB30",
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "ActionGUI",
+  "scopeName": "source.actiongui",
   "patterns": [
-    {
-      "include": "#comment"
-    },
-    {
-      "include": "#dataModelDef"
-    },
-    {
-      "include": "#roleDef"
-    }
+    { "include": "#comment" },
+    { "include": "#dataModelDef" },
+    { "include": "#roleDef" },
+    { "include": "#windowDef" }
   ],
   "repository": {
     "comment": {
       "patterns": [
-        {
-          "name": "comment.line.double-slash.actiongui",
-          "match": "//.*"
-        },
-        {
-          "name": "comment.block.actiongui",
-          "begin": "/\\*",
-          "end": "\\*/"
-        }
+        { "name": "comment.line.double-slash.actiongui", "match": "//.*$" },
+        { "name": "comment.block.actiongui", "begin": "/\\*", "end": "\\*/" }
       ]
     },
     "dataModelDef": {
       "name": "meta.datamodel.actiongui",
       "patterns": [
-        {
-          "include": "#entityDef"
-        },
-        {
-          "include": "#enumDef"
-        }
+        { "include": "#entityDef" },
+        { "include": "#enumDef" }
       ]
     },
     "entityDef": {
       "name": "meta.entity.actiongui",
       "begin": "(entity)\\s+(\\w+)\\s+(\\{)",
-      "end": "(\\})",
+      "end": "\\s*(\\})",
       "beginCaptures": {
-        "1": {
-          "name": "storage.type.actiongui"
-        },
-        "2": {
-          "name": "entity.name.type.entity.actiongui"
-        },
-        "3": {
-          "name": "punctuation.definition.block.actiongui"
-        }
+        "1": { "name": "storage.type.actiongui" },
+        "2": { "name": "entity.name.type.entity.actiongui" },
+        "3": { "name": "punctuation.definition.block.actiongui" }
       },
       "endCaptures": {
-        "1": {
-          "name": "punctuation.definition.block.actiongui"
-        }
+        "1": { "name": "punctuation.definition.block.actiongui" }
       },
       "patterns": [
-        {
-          "include": "#fieldDef"
-        },
-        {
-          "include": "#comment"
-        }
+        { "include": "#fieldDef" },
+        { "include": "#comment" }
       ]
     },
     "fieldDef": {
-      "patterns": [
-        {
-          "include": "#primitiveType"
+      "match": "\\b(\\S+)\\s+(\\w+)\\s+(.*)",
+      "captures": {
+        "1": {
+          "patterns": [
+            { "include": "#type" }
+          ]
         },
-        {
-          "include": "#collectionType"
-        },
-        {
-          "match": "\\b(oppositeTo)\\s+(\\w+)\\b",
-          "captures": {
-            "1": {
-              "name": "keyword.other.association.actiongui"
-            },
-            "2": {
-              "name": "variable.other.property.actiongui"
+        "2": { "name": "variable.other.property.actiongui" },
+        "3": {
+          "patterns": [
+            {
+              "match": "\\b(oppositeTo)\\s+(\\w+)\\b",
+              "captures": {
+                "1": { "name": "keyword.other.association.actiongui" },
+                "2": { "name": "variable.other.property.actiongui" }
+              }
             }
-          }
-        },
-        {
-          "include": "#customType"
-        },
-        {
-          "name": "variable.other.property.actiongui",
-          "match": "\\b[a-z]\\w+\\b"
+          ]
         }
+      }
+    },
+    "type": {
+      "patterns": [
+        { "include": "#primitiveType" },
+        { "include": "#collectionType" },
+        { "include": "#customType" }
       ]
     },
-    "primitiveType": {
-      "name": "support.type.primitive.actiongui",
-      "match": "\\b(Boolean|Integer|Real|String|LocalDate)\\b"
-    },
-    "customType": {
-      "name": "entity.name.type.actiongui",
-      "match": "\\b[A-Z]\\w*\\b"
-    },
+    "primitiveType": { "name": "support.type.primitive.actiongui", "match": "\\b(Boolean|Integer|Real|String|LocalDate)\\b" },
+    "customType": { "name": "entity.name.type.actiongui", "match": "\\b\\S+\\b" },
     "collectionType": {
       "name": "support.type.collection.actiongui",
       "begin": "\\b(Set|Bag|OrderedSet|Sequence)(\\()",
-      "end": "(\\))",
+      "end": "\\s*(\\))",
       "beginCaptures": {
-        "1": {
-          "name": "support.type.collection.base.actiongui"
-        },
-        "2": {
-          "name": "punctuation.definition.generic.actiongui"
-        }
+        "1": { "name": "support.type.collection.base.actiongui" },
+        "2": { "name": "punctuation.definition.generic.actiongui" }
       },
       "endCaptures": {
-        "1": {
-          "name": "punctuation.definition.generic.actiongui"
-        }
+        "1": { "name": "punctuation.definition.generic.actiongui" }
       },
       "patterns": [
-        {
-          "include": "#primitiveType"
-        },
-        {
-          "include": "#customType"
-        }
+        { "include": "#primitiveType" },
+        { "include": "#customType" }
       ]
     },
     "enumDef": {
       "name": "meta.enum.actiongui",
       "begin": "(enum)\\s+(\\w+)\\s+(\\{)",
-      "end": "(\\})",
+      "end": "\\s*(\\})",
       "beginCaptures": {
-        "1": {
-          "name": "storage.type.actiongui"
-        },
-        "2": {
-          "name": "entity.name.type.enum.actiongui"
-        },
-        "3": {
-          "name": "punctuation.definition.block.actiongui"
-        }
+        "1": { "name": "storage.type.actiongui" },
+        "2": { "name": "entity.name.type.enum.actiongui" },
+        "3": { "name": "punctuation.definition.block.actiongui" }
       },
       "endCaptures": {
-        "1": {
-          "name": "punctuation.definition.block.actiongui"
-        }
+        "1": { "name": "punctuation.definition.block.actiongui" }
       },
       "patterns": [
-        {
-          "name": "constant.other.enum.actiongui",
-          "match": "\\w+"
-        },
-        {
-          "include": "#comment"
-        }
+        { "name": "constant.other.enum.actiongui", "match": "\\w+" },
+        { "include": "#comment" }
       ]
     },
     "roleDef": {
       "name": "meta.role.actiongui",
       "begin": "(role)\\s+(\\w+)\\s+(\\{)",
-      "end": "(\\})",
+      "end": "\\s*(\\})",
       "beginCaptures": {
-        "1": {
-          "name": "storage.type.actiongui"
-        },
-        "2": {
-          "name": "entity.name.type.role.actiongui"
-        },
-        "3": {
-          "name": "punctuation.definition.block.actiongui"
-        }
+        "1": { "name": "storage.type.actiongui" },
+        "2": { "name": "entity.name.type.role.actiongui" },
+        "3": { "name": "punctuation.definition.block.actiongui" }
       },
       "endCaptures": {
-        "1": {
-          "name": "punctuation.definition.block.actiongui"
-        }
+        "1": { "name": "punctuation.definition.block.actiongui" }
       },
       "patterns": [
-        {
-          "include": "#roleEntity"
-        },
-        {
-          "include": "#comment"
-        }
+        { "include": "#roleEntity" },
+        { "include": "#comment" }
       ]
     },
     "roleEntity": {
       "name": "meta.role.entity.actiongui",
       "begin": "\\b(\\w+)\\s+(\\{)",
-      "end": "(\\})",
+      "end": "\\s*(\\})",
       "beginCaptures": {
-        "1": {
-          "name": "entity.name.type.entity.actiongui"
-        },
-        "2": {
-          "name": "punctuation.definition.block.actiongui"
-        }
+        "1": { "name": "entity.name.type.entity.actiongui" },
+        "2": { "name": "punctuation.definition.block.actiongui" }
       },
       "endCaptures": {
-        "1": {
-          "name": "punctuation.definition.block.actiongui"
-        }
+        "1": { "name": "punctuation.definition.block.actiongui" }
       },
+      "patterns": [
+        { "name": "punctuation.permission.separator.actiongui", "match": "," },
+        { "include": "#permission" },
+        {
+          "name": "meta.role.entity.entry.withConstraint.actiongui",
+          "match": "\\b(constrainedBy)\\s*(\\[.*\\])",
+          "captures": {
+            "1": { "name": "keyword.other.permission.constraint.actiongui" },
+            "2": {
+              "patterns": [
+                { "include": "#ocl" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "permission": {
       "patterns": [
         {
           "name": "variable.other.permission.overall.actiongui",
           "match": "\\b(create|delete|fullAccess)\\b",
           "captures": {
-            "1": {
-              "name": "keyword.other.permission.overall.actiongui"
-            }
+            "1": { "name": "support.function.actiongui" }
           }
         },
         {
           "name": "variable.other.permission.attribute.actiongui",
           "match": "\\b(read|update|add)\\s*\\((\\w+)\\)",
           "captures": {
-            "1": {
-              "name": "keyword.other.permission.attribute.actiongui"
-            },
-            "2": {
-              "name": "variable.other.property.actiongui"
-            }
+            "1": { "name": "support.function.actiongui" },
+            "2": { "name": "variable.other.property.actiongui" }
           }
-        },
-        {
-          "name": "punctuation.separator.permission.actiongui",
-          "match": "\\,"
-        },
-        {
-          "begin": "\\b(constrainedBy)\\s*",
-          "end": "(?<=\\])",
-          "beginCaptures": {
-            "1": {
-              "name": "keyword.other.permission.constraint.actiongui"
-            }
-          },
-          "patterns": [
-            {
-              "include": "#ocl"
-            }
-          ]
         }
       ]
     },
     "ocl": {
-      "begin": "(\\[)",
-      "end": "(\\])",
-      "beginCaptures": {
-        "1": {
-          "name": "punctuation.block.ocl.actiongui"
+      "name": "meta.embedded.ocl.actiongui",
+      "match": "(\\[)(.*)(\\])",
+      "captures": {
+        "1": { "name": "punctuation.block.ocl.actiongui" },
+        "2": {
+          "patterns": [
+            { "include": "#oclContent" }
+          ]
+        },
+        "3": { "name": "punctuation.block.ocl.actiongui" }
+      }
+    },
+    "oclContent": {
+      "patterns": [
+        { "name": "support.constant.actiongui.ocl", "match": "\\b(self|caller|value|target)\\b" },
+        { "include": "#oclAccess" },
+        { "include": "#oclMember" },
+        { "include": "#oclJoin" },
+        { "include": "#oclLiteral" },
+        { "include": "#oclConditional" },
+        {
+          "name": "meta.expression.gui.actiongui.ocl",
+          "match": "(\\$)(.+?)(\\$)",
+          "captures": {
+            "1": { "name": "punctuation.expression.gui.actiongui.ocl" },
+            "2": {
+              "patterns": [
+                { "include": "#guiExpression" }
+              ]
+            },
+            "3": { "name": "punctuation.expression.gui.actiongui.ocl" }
+          }
+        },
+        { "name": "keyword.operator.actiongui.ocl", "match": "(\\b(and|or|not|xor|implies)\\b|=|<>|<|>|<=|>=|\\+|(?!->)-|\\*|/)" },
+        { "include": "#type" }
+      ],
+      "repository": {
+        "oclExpressionList": {
+          "patterns": [
+            { "name": "punctuation.expressionList.separator.actiongui.ocl", "match": "," },
+            { "include": "#oclContent" }
+          ]
+        },
+        "oclMember": {
+          "name": "meta.member.actiongui.ocl",
+          "match": "(\\.)(div|mod|abs|max|min|floor|round|size|concat|substring|toUpper|toLower|toInteger|toReal)\\((.*?)\\)",
+          "captures": {
+            "1": { "name": "punctuation.chain.actiongui.ocl" },
+            "2": { "name": "support.function.actiongui.ocl" },
+            "3": {
+              "patterns": [
+                { "include": "#oclExpressionList" }
+              ]
+            }
+          }
+        },
+        "oclAccess": {
+          "name": "meta.access.actiongui.ocl",
+          "match": "(->)(size|includes|excludes|count|includesAll|isEmpty|notEmpty|sum|exists|forall|isUnique|sortedBy|iterate|union|intersection|including|excluding|symmetricDifference|select|reject|collect|flatten|append|prepend|insertAt|subSequence|at|first|last|indexOf|asSequence|asSet|asBag|oclIsUndefined)(\\()(.*?)(\\))",
+          "captures": {
+            "1": { "name": "punctuation.access.actiongui.ocl" },
+            "2": { "name": "support.function.actiongui.ocl" },
+            "3": { "name": "punctuation.parameters.actiongui.ocl" },
+            "4": {
+              "patterns": [
+                { "include": "#oclExpressionList" }
+              ]
+            },
+            "5": { "name": "punctuation.parameters.actiongui.ocl" }
+          }
+        },
+        "oclJoin": {
+          "name": "meta.join.actiongui.ocl",
+          "match": "(\\.)(\\w+)",
+          "captures": {
+            "1": { "name": "punctuation.join.actiongui.ocl" },
+            "2": { "name": "variable.other.property.actiongui.ocl" }
+          }
+        },
+        "oclLiteral": {
+          "patterns": [
+            { "name": "constant.language.actiongui.ocl", "match": "\\b(true|false|null|invalid)\\b" },
+            { "name": "constant.numeric.actiongui.ocl", "match": "(-)?\\d+(\\.\\d+)?" },
+            { "name": "constant.string.actiongui.ocl", "match": "\\'.*?(?<!\\\\)\\'" }
+          ]
+        },
+        "oclConditional": {
+          "match": "\\b(if)\\s+(.*)\\s+(then)\\s+(.*)\\s+(else)\\s+(.*)\\s+(endif)",
+          "captures": {
+            "1": { "name": "keyword.control.if.actiongui.ocl" },
+            "2": {
+              "patterns": [
+                { "include": "#oclContent" }
+              ]
+            },
+            "3": { "name": "keyword.control.then.actiongui.ocl" },
+            "4": {
+              "patterns": [
+                { "include": "#oclContent" }
+              ]
+            },
+            "5": { "name": "keyword.control.else.actiongui.ocl" },
+            "6": {
+              "patterns": [
+                { "include": "#oclContent" }
+              ]
+            },
+            "7": { "name": "keyword.control.endif.actiongui.ocl" }
+          }
         }
+      }
+    },
+    "windowDef": {
+      "name": "meta.window.actiongui",
+      "begin": "\\b(Window)\\s+(\\w+)\\s+(\\{)",
+      "end": "(\\})",
+      "beginCaptures": {
+        "1": { "name": "support.class.actiongui" },
+        "2": { "name": "entity.name.type.window.actiongui" },
+        "3": { "name": "punctuation.definition.block.actiongui" }
       },
       "endCaptures": {
-        "1": {
-          "name": "punctuation.block.ocl.actiongui"
-        }
+        "1": { "name": "punctuation.definition.block.actiongui" }
       },
       "patterns": [
+        { "include": "#widgetContents" }
+      ]
+    },
+    "widgetContents": {
+      "patterns": [
+        { "include": "#comment" },
+        { "include": "#widgetDef" },
         {
-          "name": "support.constant.actiongui.ocl",
-          "match": "\\b(caller|value|target)\\b"
+          "name": "meta.property.gui.actiongui",
+          "match": "\\b(\\S+)\\s+(\\w+)\\b\\s+(:=)\\s+(\\[.*\\])",
+          "captures": {
+            "1": {
+              "patterns": [
+                { "include": "#type" }
+              ]
+            },
+            "2": { "name": "variable.other.property.actiongui" },
+            "3": { "name": "keyword.operator.assignment.actiongui" },
+            "4": {
+              "patterns": [
+                { "include": "#ocl" }
+              ]
+            }
+          }
         },
         {
-          "include": "source.ocl"
+          "name": "meta.event.actiongui",
+          "begin": "\\b(event)\\s+(\\w+)\\s*((\\()(\\w+)(\\)))?\\s+(\\{)",
+          "end": "\\s*(\\})",
+          "beginCaptures": {
+            "1": { "name": "keyword.other.event.actiongui" },
+            "2": { "name": "entity.name.function.event.actiongui" },
+            "4": { "name": "punctiation.parameters.actiongui" },
+            "5": { "name": "variable.parameter.actiongui" },
+            "6": { "name": "punctiation.parameters.actiongui" },
+            "7": { "name": "punctuation.definition.block.actiongui" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.block.actiongui" }
+          },
+          "patterns": [
+            { "include": "#guiCode" }
+          ]
+        },
+        {
+          "name": "meta.columns.actiongui",
+          "begin": "\\b(columns)\\s+(\\{)",
+          "end": "(\\})",
+          "beginCaptures": {
+            "1": { "name": "keyword.other.columns.actiongui" },
+            "2": { "name": "punctuation.definition.block.actiongui" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.block.actiongui" }
+          },
+          "patterns": [
+            { "name": "punctuation.column.colon.actiongui", "match": ":" },
+            { "include": "#ocl" },
+            { "include": "#widgetDef" }
+          ]
         }
       ]
     },
-    "strings": {
-      "name": "string.quoted.single.actiongui",
-      "begin": "\\'",
-      "end": "\\'",
+    "widgetDef": {
+      "name": "meta.widget.actiongui",
+      "begin": "\\b(Label|ComboBox|Table|Button|Label|TextField|PasswordField|BooleanField|DateField|DateTimeField)\\s+(\\w+)\\s+(\\{)",
+      "end": "(\\})",
+      "beginCaptures": {
+        "1": { "name": "support.class.actiongui" },
+        "2": { "name": "entity.name.type.widget.actiongui" },
+        "3": { "name": "punctuation.definition.block.actiongui" }
+      },
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.block.actiongui" }
+      },
+      "patterns": [
+        { "include": "#widgetContents" }
+      ]
+    },
+    "guiCode": {
+      "patterns": [
+        { "include": "#comment" },
+        { "include": "#guiControlFlow" },
+        { "include": "#guiDataAction" },
+        { "include": "#guiFunctionCall" }
+      ]
+    },
+    "guiControlFlow": {
       "patterns": [
         {
-          "name": "constant.character.escape.actiongui",
-          "match": "\\\\."
+          "name": "meta.control.if.actiongui",
+          "begin": "\\b(if)\\s*(\\[.*\\])\\s*(\\{)",
+          "end": "\\s*(\\})",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.if.actiongui" },
+            "2": {
+              "patterns": [
+                { "include": "#ocl" }
+              ]
+            },
+            "3": { "name": "punctuation.definition.block.actiongui" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.block.actiongui" }
+          },
+          "patterns": [
+            { "include": "#guiCode" }
+          ]
+        },
+        {
+          "name": "meta.control.else.actiongui",
+          "begin": "\\b(else)\\s*(\\{)",
+          "end": "\\s*(\\})",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.else.actiongui" },
+            "2": { "name": "punctuation.definition.block.actiongui" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.block.actiongui" }
+          },
+          "patterns": [
+            { "include": "#guiCode" }
+          ]
+        },
+        {
+          "name": "meta.control.try.actiongui",
+          "begin": "\\b(try)\\s*(\\{)",
+          "end": "\\s*(\\})",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.try.actiongui" },
+            "2": { "name": "punctuation.definition.block.actiongui" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.block.actiongui" }
+          },
+          "patterns": [
+            { "include": "#guiCode" }
+          ]
+        },
+        {
+          "name": "meta.control.catch.actiongui",
+          "begin": "\\b(catch)\\s*(\\()(SecurityException|ModelException)(\\))\\s*(\\{)",
+          "end": "\\s*(\\})",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.catch.actiongui" },
+            "2": { "name": "punctuation.definition.parameters.actiongui" },
+            "3": { "name": "support.type.exception.actiongui" },
+            "4": { "name": "punctuation.definition.parameters.actiongui" },
+            "5": { "name": "punctuation.definition.block.actiongui" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.block.actiongui" }
+          },
+          "patterns": [
+            { "include": "#guiCode" }
+          ]
+        },
+        {
+          "name": "meta.control.foreach.actiongui",
+          "begin": "\\b(foreach)\\s+(\\w+)\\s+(in)\\s*(\\[.*\\])\\s*(\\{)",
+          "end": "\\s*(\\})",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.foreach.actiongui" },
+            "2": { "name": "variable.other.parameter.actiongui" },
+            "3": { "name": "keyword.control.foreach.in.actiongui" },
+            "4": {
+              "patterns": [
+                { "include": "#ocl" }
+              ]
+            },
+            "5": { "name": "punctuation.definition.block.actiongui" }
+          },
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.block.actiongui" }
+          },
+          "patterns": [
+            { "include": "#guiCode" }
+          ]
         }
       ]
+    },
+    "guiDataAction": {
+      "patterns": [
+        {
+          "name": "meta.dataAction.create.actiongui",
+          "match": "([\\w\\.]+)\\s*(:=)\\s*(new)\\s+(\\w+)",
+          "captures": {
+            "1": {
+              "patterns": [
+                { "include": "#guiExpression" }
+              ]
+            },
+            "2": { "name": "keyword.operator.assignment.gui.actiongui" },
+            "3": { "name": "keyword.operator.new.actiongui" },
+            "4": { "name": "entity.name.class.actiongui" }
+          }
+        },
+        {
+          "name": "meta.dataAction.delete.actiongui",
+          "match": "\\b(delete)\\s+(\\[.*\\])",
+          "captures": {
+            "1": { "name": "keyword.other.delete.actiongui" },
+            "2": {
+              "patterns": [
+                { "include": "#ocl" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "meta.dataAction.read.actiongui",
+          "match": "([\\w\\.]+)\\s*(:=)\\s*(\\[.*\\])",
+          "captures": {
+            "1": {
+              "patterns": [
+                { "include": "#guiExpression" }
+              ]
+            },
+            "2": { "name": "keyword.operator.assignment.gui.actiongui" },
+            "3": {
+              "patterns": [
+                { "include": "#ocl" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "meta.dataAction.update.actiongui",
+          "match": "(\\[.*\\])\\s*(:=|\\+=|-=)\\s*(\\[.*\\])",
+          "captures": {
+            "1": {
+              "patterns": [
+                { "include": "#ocl" }
+              ]
+            },
+            "2": { "name": "keyword.operator.assignment.gui.actiongui" },
+            "3": {
+              "patterns": [
+                { "include": "#ocl" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "guiFunctionCall": {
+      "patterns": [
+        {
+          "name": "meta.functionCall.space.actiongui",
+          "match": "\\b(\\w+)\\s+([\\w\\.]+)",
+          "captures": {
+            "1": { "name": "entity.name.function.actiongui" },
+            "2": {
+              "patterns": [
+                { "include": "#guiExpression" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "meta.functionCall.parens.actiongui",
+          "match": "\\b(\\w+)\\s*(\\()(.*)(\\))",
+          "captures": {
+            "1": { "name": "entity.name.function.actiongui" },
+            "2": { "name": "punctuation.definition.parameters.actiongui" },
+            "3": {
+              "patterns": [
+                { "include": "#oclList" }
+              ]
+            },
+            "4": { "name": "punctuation.definition.parameters.actiongui" }
+          }
+        }
+      ]
+    },
+    "oclList": {
+      "patterns": [
+        { "name": "punctuation.expressionList.separator.actiongui.ocl", "match": "," },
+        { "include": "#ocl" }
+      ]
+    },
+    "guiExpression": {
+      "patterns": [
+        {
+          "name": "meta.expression.gui.actiongui",
+          "match": "\\b(\\w+)(\\.(\\w+))*\\b",
+          "captures": {
+            "1": {
+              "patterns": [
+                { "include": "#type" }
+              ]
+            },
+            "3": { "name": "variable.other.property.actiongui" }
+          }
+        },
+        { "include": "#ocl" }
+      ]
     }
-  },
-  "scopeName": "source.actiongui"
+  }
 }
