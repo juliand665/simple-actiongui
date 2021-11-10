@@ -4,9 +4,9 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "json to yaml",
+			"label": "json to others",
 			"type": "shell",
-			"command": "npx js-yaml syntaxes/actiongui.tmLanguage.yaml > syntaxes/actiongui.tmLanguage.json",
+			"command": "npx plist2 syntaxes/actiongui.tmLanguage.yaml syntaxes/actiongui.tmLanguage.json; npx plist2 syntaxes/actiongui.tmLanguage.yaml syntaxes/actiongui.tmLanguage",
 			"problemMatcher": [],
 			"group": {
 				"kind": "build",
