@@ -78,7 +78,7 @@
         <key>name</key>
         <string>meta.entity.actiongui</string>
         <key>begin</key>
-        <string>(entity)\s+(\w+)\s+(\{)</string>
+        <string>\b(entity)\b\s*([A-Z]\w*)\b\s*(\b(extends)\b\s*([A-Z]\w*))?\s*(\{)</string>
         <key>end</key>
         <string>\s*(\})</string>
         <key>beginCaptures</key>
@@ -93,7 +93,17 @@
             <key>name</key>
             <string>entity.name.type.entity.actiongui</string>
           </dict>
-          <key>3</key>
+          <key>4</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.other.extends.actiongui</string>
+          </dict>
+          <key>5</key>
+          <dict>
+            <key>name</key>
+            <string>entity.name.type.entity.actiongui</string>
+          </dict>
+          <key>6</key>
           <dict>
             <key>name</key>
             <string>punctuation.definition.block.actiongui</string>
@@ -122,7 +132,7 @@
       <key>fieldDef</key>
       <dict>
         <key>match</key>
-        <string>\b(\S+)\s+(\w+)\s+(.*)</string>
+        <string>\b([\w()]+)\s*\b([a-z]\w*)\b\s*((oppositeTo)\b\s*([a-z]\w*)\b)?</string>
         <key>captures</key>
         <dict>
           <key>1</key>
@@ -140,28 +150,15 @@
             <key>name</key>
             <string>variable.other.property.actiongui</string>
           </dict>
-          <key>3</key>
+          <key>4</key>
           <dict>
-            <key>patterns</key>
-            <array>
-              <dict>
-                <key>match</key>
-                <string>\b(oppositeTo)\s+(\w+)\b</string>
-                <key>captures</key>
-                <dict>
-                  <key>1</key>
-                  <dict>
-                    <key>name</key>
-                    <string>keyword.other.association.actiongui</string>
-                  </dict>
-                  <key>2</key>
-                  <dict>
-                    <key>name</key>
-                    <string>variable.other.property.actiongui</string>
-                  </dict>
-                </dict>
-              </dict>
-            </array>
+            <key>name</key>
+            <string>keyword.other.association.actiongui</string>
+          </dict>
+          <key>5</key>
+          <dict>
+            <key>name</key>
+            <string>variable.other.property.actiongui</string>
           </dict>
         </dict>
       </dict>
@@ -195,17 +192,15 @@
         <key>name</key>
         <string>entity.name.type.actiongui</string>
         <key>match</key>
-        <string>\b\w+\b</string>
+        <string>\b[A-Z]\w*\b</string>
       </dict>
       <key>collectionType</key>
       <dict>
         <key>name</key>
         <string>support.type.collection.actiongui</string>
-        <key>begin</key>
-        <string>\b(Set|Bag|OrderedSet|Sequence)(\()</string>
-        <key>end</key>
-        <string>\s*(\))</string>
-        <key>beginCaptures</key>
+        <key>match</key>
+        <string>\b(Set|Bag|OrderedSet|Sequence)(\()([A-Z]\w*)(\))</string>
+        <key>captures</key>
         <dict>
           <key>1</key>
           <dict>
@@ -217,33 +212,35 @@
             <key>name</key>
             <string>punctuation.definition.generic.actiongui</string>
           </dict>
-        </dict>
-        <key>endCaptures</key>
-        <dict>
-          <key>1</key>
+          <key>3</key>
+          <dict>
+            <key>name</key>
+            <string>entity.name.type.actiongui</string>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>include</key>
+                <string>#primitiveType</string>
+              </dict>
+              <dict>
+                <key>include</key>
+                <string>#customType</string>
+              </dict>
+            </array>
+          </dict>
+          <key>4</key>
           <dict>
             <key>name</key>
             <string>punctuation.definition.generic.actiongui</string>
           </dict>
         </dict>
-        <key>patterns</key>
-        <array>
-          <dict>
-            <key>include</key>
-            <string>#primitiveType</string>
-          </dict>
-          <dict>
-            <key>include</key>
-            <string>#customType</string>
-          </dict>
-        </array>
       </dict>
       <key>enumDef</key>
       <dict>
         <key>name</key>
         <string>meta.enum.actiongui</string>
         <key>begin</key>
-        <string>(enum)\s+(\w+)\s+(\{)</string>
+        <string>\b(enum)\b\s*([A-Z]\w*)\b\s*(\{)</string>
         <key>end</key>
         <string>\s*(\})</string>
         <key>beginCaptures</key>
@@ -291,7 +288,7 @@
         <key>name</key>
         <string>meta.role.actiongui</string>
         <key>begin</key>
-        <string>(role)\s+(\w+)(\s+(extends)\s+(\w+))?\s*(\{)</string>
+        <string>\b(role)\s*(\w+)\b\s*((extends)\s*(\w+))?\s*(\{)</string>
         <key>end</key>
         <string>\s*(\})</string>
         <key>beginCaptures</key>
@@ -739,7 +736,7 @@
           <key>oclConditional</key>
           <dict>
             <key>match</key>
-            <string>\b(if)\s+(.*)\s+(then)\s+(.*)\s+(else)\s+(.*)\s+(endif)</string>
+            <string>\b(if)\b\s*(.*)\s*\b(then)\b\s*(.*)\s*\b(else)\b\s*(.*)\s*\b(endif)\b</string>
             <key>captures</key>
             <dict>
               <key>1</key>
@@ -831,7 +828,7 @@
         <key>name</key>
         <string>meta.window.actiongui</string>
         <key>begin</key>
-        <string>\b(Window)\s+(\w+)\s+(\{)</string>
+        <string>\b(Window)\b\s*(\w+)\s*(\{)</string>
         <key>end</key>
         <string>(\})</string>
         <key>beginCaptures</key>
@@ -882,48 +879,9 @@
           </dict>
           <dict>
             <key>name</key>
-            <string>meta.property.gui.actiongui</string>
-            <key>match</key>
-            <string>\b(\S+)\s+(\w+)\b\s+(:=)\s+(\[.*\])</string>
-            <key>captures</key>
-            <dict>
-              <key>1</key>
-              <dict>
-                <key>patterns</key>
-                <array>
-                  <dict>
-                    <key>include</key>
-                    <string>#type</string>
-                  </dict>
-                </array>
-              </dict>
-              <key>2</key>
-              <dict>
-                <key>name</key>
-                <string>variable.other.property.actiongui</string>
-              </dict>
-              <key>3</key>
-              <dict>
-                <key>name</key>
-                <string>keyword.operator.assignment.actiongui</string>
-              </dict>
-              <key>4</key>
-              <dict>
-                <key>patterns</key>
-                <array>
-                  <dict>
-                    <key>include</key>
-                    <string>#ocl</string>
-                  </dict>
-                </array>
-              </dict>
-            </dict>
-          </dict>
-          <dict>
-            <key>name</key>
             <string>meta.event.actiongui</string>
             <key>begin</key>
-            <string>\b(event)\s+(\w+)\s*((\()(\w+)(\)))?\s+(\{)</string>
+            <string>\b(event)\b\s*(\w+)\s*((\()(\w+)(\)))?\s*(\{)</string>
             <key>end</key>
             <string>\s*(\})</string>
             <key>beginCaptures</key>
@@ -977,9 +935,48 @@
           </dict>
           <dict>
             <key>name</key>
+            <string>meta.property.gui.actiongui</string>
+            <key>match</key>
+            <string>\b([\w()]+)\s*\b(\w+)\s*((:=)\s*(\[.*\]))?</string>
+            <key>captures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>patterns</key>
+                <array>
+                  <dict>
+                    <key>include</key>
+                    <string>#type</string>
+                  </dict>
+                </array>
+              </dict>
+              <key>2</key>
+              <dict>
+                <key>name</key>
+                <string>variable.other.property.actiongui</string>
+              </dict>
+              <key>4</key>
+              <dict>
+                <key>name</key>
+                <string>keyword.operator.assignment.actiongui</string>
+              </dict>
+              <key>5</key>
+              <dict>
+                <key>patterns</key>
+                <array>
+                  <dict>
+                    <key>include</key>
+                    <string>#ocl</string>
+                  </dict>
+                </array>
+              </dict>
+            </dict>
+          </dict>
+          <dict>
+            <key>name</key>
             <string>meta.columns.actiongui</string>
             <key>begin</key>
-            <string>\b(columns)\s+(\{)</string>
+            <string>\b(columns)\s*(\{)</string>
             <key>end</key>
             <string>(\})</string>
             <key>beginCaptures</key>
@@ -1028,7 +1025,7 @@
         <key>name</key>
         <string>meta.widget.actiongui</string>
         <key>begin</key>
-        <string>\b(Label|ComboBox|Table|Button|Label|TextField|PasswordField|BooleanField|DateField|DateTimeField)\s+(\w+)\s+(\{)</string>
+        <string>\b(Label|ComboBox|Table|Button|Label|TextField|PasswordField|BooleanField|DateField|DateTimeField)\b\s*(\w+)\s*(\{)</string>
         <key>end</key>
         <string>(\})</string>
         <key>beginCaptures</key>
@@ -1264,7 +1261,7 @@
             <key>name</key>
             <string>meta.control.foreach.actiongui</string>
             <key>begin</key>
-            <string>\b(foreach)\s+(\w+)\s+(in)\s*(\[.*\])\s*(\{)</string>
+            <string>\b(foreach)\b\s*(\w+)\b\s*(in)\s*(\[.*\])\s*(\{)</string>
             <key>end</key>
             <string>\s*(\})</string>
             <key>beginCaptures</key>
@@ -1326,7 +1323,7 @@
             <key>name</key>
             <string>meta.dataAction.create.actiongui</string>
             <key>match</key>
-            <string>([\w\.]+)\s*(:=)\s*(new)\s+(\w+)</string>
+            <string>([\w\.]+)\s*(:=)\s*(new)\b\s*(\w+)</string>
             <key>captures</key>
             <dict>
               <key>1</key>
@@ -1360,7 +1357,7 @@
             <key>name</key>
             <string>meta.dataAction.delete.actiongui</string>
             <key>match</key>
-            <string>\b(delete)\s+(\[.*\])</string>
+            <string>\b(delete)\s*(\[.*\])</string>
             <key>captures</key>
             <dict>
               <key>1</key>
@@ -1458,7 +1455,7 @@
             <key>name</key>
             <string>meta.functionCall.space.actiongui</string>
             <key>match</key>
-            <string>\b(\w+)\s+([\w\.]+)</string>
+            <string>\b(\w+)\b\s*([\w\.]+)</string>
             <key>captures</key>
             <dict>
               <key>1</key>

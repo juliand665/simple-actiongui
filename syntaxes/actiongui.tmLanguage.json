@@ -26,12 +26,14 @@
     },
     "entityDef": {
       "name": "meta.entity.actiongui",
-      "begin": "(entity)\\s+(\\w+)\\s+(\\{)",
+      "begin": "\\b(entity)\\b\\s*([A-Z]\\w*)\\b\\s*(\\b(extends)\\b\\s*([A-Z]\\w*))?\\s*(\\{)",
       "end": "\\s*(\\})",
       "beginCaptures": {
         "1": { "name": "storage.type.actiongui" },
         "2": { "name": "entity.name.type.entity.actiongui" },
-        "3": { "name": "punctuation.definition.block.actiongui" }
+        "4": { "name": "keyword.other.extends.actiongui" },
+        "5": { "name": "entity.name.type.entity.actiongui" },
+        "6": { "name": "punctuation.definition.block.actiongui" }
       },
       "endCaptures": {
         "1": { "name": "punctuation.definition.block.actiongui" }
@@ -42,7 +44,7 @@
       ]
     },
     "fieldDef": {
-      "match": "\\b(\\S+)\\s+(\\w+)\\s+(.*)",
+      "match": "\\b([\\w()]+)\\s*\\b([a-z]\\w*)\\b\\s*((oppositeTo)\\b\\s*([a-z]\\w*)\\b)?",
       "captures": {
         "1": {
           "patterns": [
@@ -50,17 +52,8 @@
           ]
         },
         "2": { "name": "variable.other.property.actiongui" },
-        "3": {
-          "patterns": [
-            {
-              "match": "\\b(oppositeTo)\\s+(\\w+)\\b",
-              "captures": {
-                "1": { "name": "keyword.other.association.actiongui" },
-                "2": { "name": "variable.other.property.actiongui" }
-              }
-            }
-          ]
-        }
+        "4": { "name": "keyword.other.association.actiongui" },
+        "5": { "name": "variable.other.property.actiongui" }
       }
     },
     "type": {
@@ -71,26 +64,26 @@
       ]
     },
     "primitiveType": { "name": "support.type.primitive.actiongui", "match": "\\b(Boolean|Integer|Real|String|LocalDate)\\b" },
-    "customType": { "name": "entity.name.type.actiongui", "match": "\\b\\w+\\b" },
+    "customType": { "name": "entity.name.type.actiongui", "match": "\\b[A-Z]\\w*\\b" },
     "collectionType": {
       "name": "support.type.collection.actiongui",
-      "begin": "\\b(Set|Bag|OrderedSet|Sequence)(\\()",
-      "end": "\\s*(\\))",
-      "beginCaptures": {
+      "match": "\\b(Set|Bag|OrderedSet|Sequence)(\\()([A-Z]\\w*)(\\))",
+      "captures": {
         "1": { "name": "support.type.collection.base.actiongui" },
-        "2": { "name": "punctuation.definition.generic.actiongui" }
-      },
-      "endCaptures": {
-        "1": { "name": "punctuation.definition.generic.actiongui" }
-      },
-      "patterns": [
-        { "include": "#primitiveType" },
-        { "include": "#customType" }
-      ]
+        "2": { "name": "punctuation.definition.generic.actiongui" },
+        "3": {
+          "name": "entity.name.type.actiongui",
+          "patterns": [
+            { "include": "#primitiveType" },
+            { "include": "#customType" }
+          ]
+        },
+        "4": { "name": "punctuation.definition.generic.actiongui" }
+      }
     },
     "enumDef": {
       "name": "meta.enum.actiongui",
-      "begin": "(enum)\\s+(\\w+)\\s+(\\{)",
+      "begin": "\\b(enum)\\b\\s*([A-Z]\\w*)\\b\\s*(\\{)",
       "end": "\\s*(\\})",
       "beginCaptures": {
         "1": { "name": "storage.type.actiongui" },
@@ -107,7 +100,7 @@
     },
     "roleDef": {
       "name": "meta.role.actiongui",
-      "begin": "(role)\\s+(\\w+)(\\s+(extends)\\s+(\\w+))?\\s*(\\{)",
+      "begin": "\\b(role)\\s*(\\w+)\\b\\s*((extends)\\s*(\\w+))?\\s*(\\{)",
       "end": "\\s*(\\})",
       "beginCaptures": {
         "1": { "name": "storage.type.actiongui" },
@@ -276,7 +269,7 @@
           ]
         },
         "oclConditional": {
-          "match": "\\b(if)\\s+(.*)\\s+(then)\\s+(.*)\\s+(else)\\s+(.*)\\s+(endif)",
+          "match": "\\b(if)\\b\\s*(.*)\\s*\\b(then)\\b\\s*(.*)\\s*\\b(else)\\b\\s*(.*)\\s*\\b(endif)\\b",
           "captures": {
             "1": { "name": "keyword.control.if.actiongui.ocl" },
             "2": {
@@ -316,7 +309,7 @@
     },
     "windowDef": {
       "name": "meta.window.actiongui",
-      "begin": "\\b(Window)\\s+(\\w+)\\s+(\\{)",
+      "begin": "\\b(Window)\\b\\s*(\\w+)\\s*(\\{)",
       "end": "(\\})",
       "beginCaptures": {
         "1": { "name": "support.class.actiongui" },
@@ -335,26 +328,8 @@
         { "include": "#comment" },
         { "include": "#widgetDef" },
         {
-          "name": "meta.property.gui.actiongui",
-          "match": "\\b(\\S+)\\s+(\\w+)\\b\\s+(:=)\\s+(\\[.*\\])",
-          "captures": {
-            "1": {
-              "patterns": [
-                { "include": "#type" }
-              ]
-            },
-            "2": { "name": "variable.other.property.actiongui" },
-            "3": { "name": "keyword.operator.assignment.actiongui" },
-            "4": {
-              "patterns": [
-                { "include": "#ocl" }
-              ]
-            }
-          }
-        },
-        {
           "name": "meta.event.actiongui",
-          "begin": "\\b(event)\\s+(\\w+)\\s*((\\()(\\w+)(\\)))?\\s+(\\{)",
+          "begin": "\\b(event)\\b\\s*(\\w+)\\s*((\\()(\\w+)(\\)))?\\s*(\\{)",
           "end": "\\s*(\\})",
           "beginCaptures": {
             "1": { "name": "keyword.other.event.actiongui" },
@@ -372,8 +347,26 @@
           ]
         },
         {
+          "name": "meta.property.gui.actiongui",
+          "match": "\\b([\\w()]+)\\s*\\b(\\w+)\\s*((:=)\\s*(\\[.*\\]))?",
+          "captures": {
+            "1": {
+              "patterns": [
+                { "include": "#type" }
+              ]
+            },
+            "2": { "name": "variable.other.property.actiongui" },
+            "4": { "name": "keyword.operator.assignment.actiongui" },
+            "5": {
+              "patterns": [
+                { "include": "#ocl" }
+              ]
+            }
+          }
+        },
+        {
           "name": "meta.columns.actiongui",
-          "begin": "\\b(columns)\\s+(\\{)",
+          "begin": "\\b(columns)\\s*(\\{)",
           "end": "(\\})",
           "beginCaptures": {
             "1": { "name": "keyword.other.columns.actiongui" },
@@ -392,7 +385,7 @@
     },
     "widgetDef": {
       "name": "meta.widget.actiongui",
-      "begin": "\\b(Label|ComboBox|Table|Button|Label|TextField|PasswordField|BooleanField|DateField|DateTimeField)\\s+(\\w+)\\s+(\\{)",
+      "begin": "\\b(Label|ComboBox|Table|Button|Label|TextField|PasswordField|BooleanField|DateField|DateTimeField)\\b\\s*(\\w+)\\s*(\\{)",
       "end": "(\\})",
       "beginCaptures": {
         "1": { "name": "support.class.actiongui" },
@@ -486,7 +479,7 @@
         },
         {
           "name": "meta.control.foreach.actiongui",
-          "begin": "\\b(foreach)\\s+(\\w+)\\s+(in)\\s*(\\[.*\\])\\s*(\\{)",
+          "begin": "\\b(foreach)\\b\\s*(\\w+)\\b\\s*(in)\\s*(\\[.*\\])\\s*(\\{)",
           "end": "\\s*(\\})",
           "beginCaptures": {
             "1": { "name": "keyword.control.foreach.actiongui" },
@@ -512,7 +505,7 @@
       "patterns": [
         {
           "name": "meta.dataAction.create.actiongui",
-          "match": "([\\w\\.]+)\\s*(:=)\\s*(new)\\s+(\\w+)",
+          "match": "([\\w\\.]+)\\s*(:=)\\s*(new)\\b\\s*(\\w+)",
           "captures": {
             "1": {
               "patterns": [
@@ -526,7 +519,7 @@
         },
         {
           "name": "meta.dataAction.delete.actiongui",
-          "match": "\\b(delete)\\s+(\\[.*\\])",
+          "match": "\\b(delete)\\s*(\\[.*\\])",
           "captures": {
             "1": { "name": "keyword.other.delete.actiongui" },
             "2": {
@@ -576,7 +569,7 @@
       "patterns": [
         {
           "name": "meta.functionCall.space.actiongui",
-          "match": "\\b(\\w+)\\s+([\\w\\.]+)",
+          "match": "\\b(\\w+)\\b\\s*([\\w\\.]+)",
           "captures": {
             "1": { "name": "keyword.other.function.actiongui" },
             "2": {
